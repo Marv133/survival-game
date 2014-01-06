@@ -1,0 +1,6 @@
+target
+.DS_Store
+.idea/*
+!.idea/runConfigurations
+*.iml
+testng-ide.xml
