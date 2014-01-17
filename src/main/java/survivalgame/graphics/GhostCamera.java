@@ -20,15 +20,17 @@ public class GhostCamera extends PerspectivicCamera {
         movementFriction = 0.99f;
     }
 
-    public void update(MovementController controller) { //todo controller adden
+    public void update(MovementController controller) {
         long now = System.currentTimeMillis();
-        long time = now - lastUpdate;
+        float time = (float)(now - lastUpdate)/1000.0f;
         lastUpdate = now;
 
-        velocity = operation(controller.getRotation(), controller.getDirection());
-        velocity.x *= movementAcceleration * time;
-        velocity.y *= movementAcceleration * time;
-        velocity.z *= movementAcceleration * time;
+        Vector3f op = operation(controller.getRotation(), controller.getDirection());
+        op.x *= movementAcceleration * time;
+        op.y *= movementAcceleration * time;
+        op.z *= movementAcceleration * time;
+
+        velocity = Vector3f.add(velocity,op,null);
 
         if (velocity.length() > movementMaxSpeed) {
             float value = movementMaxSpeed / velocity.length();
@@ -45,6 +47,8 @@ public class GhostCamera extends PerspectivicCamera {
         velocity.x *= 1.0f - time * movementFriction;
         velocity.y *= 1.0f - time * movementFriction;
         velocity.z *= 1.0f - time * movementFriction;
+
+        m_Rotation = controller.getRotation();
 
         m_NeedsUpdate = true;
         super.update();

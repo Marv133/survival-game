@@ -1,9 +1,15 @@
 package survivalgame.graphics;
 
+import org.lwjgl.BufferUtils;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
+
+import java.nio.FloatBuffer;
+
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.glMatrixMode;
 
 abstract class Camera {
     private Vector2f m_Screen;
@@ -12,8 +18,8 @@ abstract class Camera {
     protected Vector3f m_Position;
     protected Quaternion m_Rotation;
     protected boolean m_NeedsUpdate;
-    protected Matrix4f m_ProjectionMatrix;
-    protected Matrix4f m_ModelViewMatrix;
+    protected Matrix4f m_ProjectionMatrix = new Matrix4f();
+    protected Matrix4f m_ModelViewMatrix = new Matrix4f();
 
 
     public Camera(){
@@ -27,12 +33,21 @@ abstract class Camera {
 
     public abstract void update();
 
-//    public void upload()
-//    {
-//        glMatrixMode(GL_PROJECTION);
-//        glLoadMatrix(FloatBuffer.allocate(GL_PROJECTION_MATRIX));
-//
-//    }
+    public void upload()
+    {
+        FloatBuffer projectionBuffer = BufferUtils.createFloatBuffer(16);
+        m_ProjectionMatrix.store(projectionBuffer);
+        projectionBuffer.rewind();
+        glMatrixMode(GL_PROJECTION);
+        glLoadMatrix(projectionBuffer);
+
+        FloatBuffer modelBuffer = BufferUtils.createFloatBuffer(16);
+        m_ModelViewMatrix.store(modelBuffer);
+        modelBuffer.rewind();
+        glMatrixMode(GL_MODELVIEW);
+        glLoadMatrix(modelBuffer);
+
+    }
 
     public Vector2f getScreen() {
         return m_Screen;

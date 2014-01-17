@@ -81,8 +81,8 @@ public class PerspectivicCamera extends Camera {
 
         out.m02 = 0;
         out.m12 = 0;
-        out.m22 = (far + near) / (far - near);
-        out.m32 = (2.0f * far * near) / (far - near);
+        out.m22 = (far + near) / (near - far);
+        out.m32 = (2.0f * far * near) / (near - far);
 
         out.m03 = 0;
         out.m13 = 0;
