@@ -2,6 +2,7 @@ package survivalgame.graphics;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Quaternion;
+import org.lwjgl.util.vector.Vector3f;
 
 public class PerspectivicCamera extends Camera {
 
@@ -88,6 +89,24 @@ public class PerspectivicCamera extends Camera {
         out.m13 = 0;
         out.m23 = -1;
         out.m33 = 0;
+    }
+
+    protected Vector3f operation(Quaternion quaternion, Vector3f vector) {
+        Vector3f r = new Vector3f();
+        float a00 = quaternion.w * quaternion.w;
+        float a01 = quaternion.w * quaternion.x;
+        float a02 = quaternion.w * quaternion.y;
+        float a03 = quaternion.w * quaternion.z;
+        float a11 = quaternion.x * quaternion.x;
+        float a12 = quaternion.x * quaternion.y;
+        float a13 = quaternion.x * quaternion.z;
+        float a22 = quaternion.y * quaternion.y;
+        float a23 = quaternion.y * quaternion.z;
+        float a33 = quaternion.z * quaternion.z;
+        r.x = vector.x * (+a00 + a11 - a22 - a33) + 2 * (a12 * vector.y + a13 * vector.z + a02 * vector.z - a03 * vector.y);
+        r.y = vector.y * (+a00 - a11 + a22 - a33) + 2 * (a12 * vector.x + a23 * vector.z + a03 * vector.x - a01 * vector.z);
+        r.z = vector.z * (+a00 - a11 - a22 + a33) + 2 * (a13 * vector.x + a23 * vector.y - a02 * vector.x + a01 * vector.y);
+        return r;
     }
 
     private float Deg2Rad(float deg) {

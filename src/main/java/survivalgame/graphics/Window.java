@@ -150,14 +150,14 @@ public class Window {
             int dx = Mouse.getDX();
             int dy = Mouse.getDY();
 
-            controller.onMouseMoveWithCanteredMouse(new Vector2f(dx, dy));
+            controller.onMouseMoveWithCanteredMouse(new Vector2f(-dx, -dy));
 //            System.out.println(Mouse.getX() + " |-| " +  Mouse.getY());
 //            System.out.println(dx + " |+| " +  dy);
             Mouse.setCursorPosition(width / 2, height / 2);
             controller.update();
             player.update(controller);
             player.upload();
-//            System.out.println(player.getPosition().toString());
+            System.out.println(player.getPosition().toString());
             render();
             Display.update();
             Display.sync(60);

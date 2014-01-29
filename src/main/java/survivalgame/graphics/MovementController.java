@@ -88,13 +88,13 @@ public class MovementController {
         move.x *= m_MouseSensitivity;
         move.y *= m_MouseSensitivity;
 
-        m_EulerRotation = Vector2f.add(m_EulerRotation,move,m_EulerRotation);
+        m_EulerRotation = Vector2f.add(m_EulerRotation,move,null);
 
         Quaternion xRotation = new Quaternion(cUp.x,cUp.y,cUp.z,m_EulerRotation.x);
         Quaternion yRotation = new Quaternion(cRight.x,cRight.y,cRight.z,m_EulerRotation.y);
 
         m_Rotation = Quaternion.mul(xRotation,yRotation,null);
-        System.out.println(m_Rotation.toString());
+//        System.out.println(m_Rotation.toString());
     }
 
     public Vector3f getDirection() {
