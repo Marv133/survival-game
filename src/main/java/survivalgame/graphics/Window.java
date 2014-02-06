@@ -18,6 +18,7 @@ import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
 import static org.lwjgl.opengl.GL11.GL_LEQUAL;
+import static org.lwjgl.opengl.GL11.GL_LINES;
 import static org.lwjgl.opengl.GL11.GL_MODELVIEW;
 import static org.lwjgl.opengl.GL11.GL_PROJECTION;
 import static org.lwjgl.opengl.GL11.GL_QUADS;
@@ -150,18 +151,48 @@ public class Window {
             int dx = Mouse.getDX();
             int dy = Mouse.getDY();
 
-            controller.onMouseMoveWithCanteredMouse(new Vector2f(-dx, -dy));
+            controller.onMouseMoveWithCanteredMouse(new Vector2f(-dx, 0));
+//            controller.onMouseMove(new Vector2f(Mouse.getX(),height / 2));
 //            System.out.println(Mouse.getX() + " |-| " +  Mouse.getY());
 //            System.out.println(dx + " |+| " +  dy);
             Mouse.setCursorPosition(width / 2, height / 2);
             controller.update();
             player.update(controller);
             player.upload();
-            System.out.println(player.getPosition().toString());
-            render();
+//            System.out.println(player.getPosition().toString());
+            renderNetz();
             Display.update();
             Display.sync(60);
         }
+    }
+
+    private void renderNetz(){
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glBegin(GL_LINES);
+        for (int j= -100; j < 100; j++){
+            for(int i = -100; i < 100; i++) {
+                if(i % 5 == 0) {
+                    glColor3f(1,0,0);
+                }
+                else {
+                    glColor3f(0, 0, 0);
+                }
+                glVertex3f(i,j,-100);
+                glVertex3f(i,j,+100);
+            }
+
+            for(int i = -100; i < 100; i++) {
+                if(i % 5 == 0) {
+                    glColor3f(0,0,1);
+                }
+                else {
+                    glColor3f(0, 0, 0);
+                }
+                glVertex3f(i,-100,j);
+                glVertex3f(i,+100,j);
+            }
+        }
+        glEnd();
     }
 
     private void render() {

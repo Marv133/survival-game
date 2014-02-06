@@ -17,8 +17,7 @@ public class PerspectivicCamera extends Camera {
 
     @Override
     public void update() {
-        if(!m_NeedsUpdate)
-            return;
+        if (!m_NeedsUpdate) { return; }
         calcMatrix();
         m_NeedsUpdate = false;
     }
@@ -63,13 +62,45 @@ public class PerspectivicCamera extends Camera {
         matrix.m33 = 1;
     }
 
+    /*
+    public void setRotation2(Matrix4f matrix, Quaternion rotation) {
+        rotation.normalise();
+        float xx = rotation.x * rotation.x;
+        float xy = rotation.x * rotation.y;
+        float xz = rotation.x * rotation.z;
+        float xw = rotation.x * rotation.w;
+
+        float yy = rotation.y * rotation.y;
+        float yz = rotation.y * rotation.z;
+        float yw = rotation.y * rotation.w;
+
+        float zz = rotation.z * rotation.z;
+        float zw = rotation.z * rotation.w;
+
+        matrix.m00 = 1 - 2 * (yy + zz);
+        matrix.m01 = 2 * (xy - zw);
+        matrix.m02 = 2 * (xz + yw);
+
+        matrix.m10 = 2 * (xy + zw);
+        matrix.m11 = 1 - 2 * (xx + zz);
+        matrix.m12 = 2 * (yz - xw);
+
+        matrix.m20 = 2 * (xz - yw);
+        matrix.m21 = 2 * (yz + xw);
+        matrix.m22 = 1 - 2 * (xx + yy);
+
+        matrix.m03 = matrix.m13 = matrix.m23 = matrix.m30 = matrix.m31 = matrix.m32 = 0;
+        matrix.m33 = 1;
+    }
+    */
     private float cotan(float v) {
         return (float) Math.tan(Math.PI / 2 - v);
     }
 
     private void CreatePerspectivicMatrix(Matrix4f out, float fov, float aspect, float near, float far) {
         float f = cotan(Deg2Rad(fov) / 2.0f);
-
+//        double angle = (fov/180.0f) * Math.PI;
+//        float f = (float) (1.0f/ Math.tan(angle*0.5));
         out.m00 = f / aspect;
         out.m10 = 0;
         out.m20 = 0;
